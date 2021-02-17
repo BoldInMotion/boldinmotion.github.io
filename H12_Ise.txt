@@ -1,0 +1,126 @@
+H12
+
+opdracht 1
+
+/**
+ * With the purpose to add the number of a line in front of a line and to count the number of curly brackets by reading a file (class RegelTeller)
+ * note: Terminal window setting must be on unlimited buffering t display the entire outcome
+ * //Ik verander mijn manier van documentatie, want ik vind het onoverzichtelijk worden om het te doen op de manier 
+ * die is voorgeschreven vanuit BlueJ, ik za nu per regel beschrijven wat er gebeurt
+ * 
+ * @author Ise An Verstegen 
+ * @version 12/1/2021
+ * 
+ */
+
+import java.io.*;
+
+public class RegelTeller {
+  public static void main( String[] args ) {
+    BufferedReader in;
+    String regel;                                                                               //om de regels van het bestand te kunnen gebruiken binnen de while loop
+    int regelnummer;                                                                            //om het regelnummer van de regel te bepalen (= index)
+    int openAccolade;                                                                           //om het aantal open accolades te kunnen bepalen
+    int sluitAccolade;                                                                          //om het aantal gesloten accolades te kunnen bepalen
+    try {  
+        in = new BufferedReader( new FileReader( "H8_Ise.txt" ) );                              //om het bestand in te lezen, in dit geval H8_Ise.txt
+        regelnummer = 1;                                                                        //het geven van een waarde aan de opgestelde variabelen. waarde is 0 (want begin van regel) behalve bij regelnummer, de eersste regel wordt weerggeven met nummer 1
+        openAccolade = 0;
+        sluitAccolade = 0;
+        while ( ( regel = in.readLine() ) != null ) {                                           //zolang de regel die wordt gelezen niet gelijk is aan geen waarde(lees het einde van het bestand), gebeurt er het volgende:
+            System.out.println(regelnummer + ": " + regel );                                    //het printen van regelnummer: + de String van regel
+            regelnummer++;                                                                      //na het lezen van een regel gaat het programma verder met het lezen en printen van de volgende regel voor zolang de voorwaarde van while geldig is
+            for( int i = 0; i < regel.length(); i++ ) {                                         //voor wanneer de regel die wordt gelezen kleiner is dan het einde van de regel die wordt gelezen, gebeurt er het volgende:
+                if (regel.charAt(i) == '{')                                                     //wanneer het caracter in de regel gelijk is aan '{'
+                   openAccolade++;                                                              //het opslaan en optellen van het aantal { binnen het bestand
+                else if (regel.charAt(i) == '}')                                                //wanneer het caracter in de regel gelijk is aan '}'
+                    sluitAccolade++;                                                            //het opslaan en optellen van het aantal } binnen het bestand
+            }
+        }
+        if (openAccolade == sluitAccolade){                                                     //wanneer het aantal open accolades gelijk is aan het aantal gesloten accolades, gebeurt er het volgende:
+            System.out.println( "Het aantal open accolades (" + openAccolade                    //het printen van de gegevens over accolades
+                                + ") is gelijk aan het aantal sluit accolades (" 
+                                + sluitAccolade + ").");
+        }
+        else if (openAccolade != sluitAccolade){                                                //wanneer het aantal open accolades niet gelijk is aan het aantal gesloten accolades, gebeurt er het volgende:
+            System.out.println( "Het aantal open accolades (" + openAccolade                    //het printen van de gegevens over accolades
+                                + ") is niet gelijk aan het aantal sluit accolades (" 
+                                + sluitAccolade + ").");
+        }
+        in.close();
+    }
+    catch( FileNotFoundException e ) {                                                         //om een bestand dat niet wordt gevonden af te vangen
+      System.out.println( "Kan bestand niet vinden" );
+    }
+    catch( IOException e ) {                                                                    //om een bestand dat niet kan worden gelezen af te vangen
+      System.out.println( "Fout bij het lezen of sluiten bestand" );
+      e.printStackTrace();
+    }
+    
+  }
+}
+
+opdracht 2
+
+/**
+ * With the purpose to make calculations with the length of a line from a text-file 
+ * and to display these calculations (class Regellentge)
+ * //Ik verander mijn manier van documentatie, want ik vind het onoverzichtelijk worden om het te doen op de manier 
+ * die is voorgeschreven vanuit BlueJ, ik za nu per regel beschrijven wat er gebeurt
+ * 
+ * @author Ise An Verstegen 
+ * @version 12/1/2021
+ * 
+ */
+import java.io.*;
+import java.util.*;
+
+public class Regellengte {
+    public static void main( String[] args ) {
+        BufferedReader in;
+        String regel;                                                                               //om de regels van het bestand te kunnen gebruiken binnen de while loop
+        int regellengte;                                                                            //om de lengte van een regel te bepalen
+        double gemiddeldeLengte;                                                                    //om de gemiddelde lengte van alle regels te bepalen 
+        int langsteRegel;                                                                           //om de langte regel te bepalen
+        int eersteLangsteRegel;                                                                     //om de plek van de eerste langte regel te bepalen
+        int aantalLangsteRegel;                                                                     //om het aantal langste regels te bepalen lengte == langsteRegel
+        ArrayList<Integer> lijst;                                                                   //om het regelnummer en de lengte van iedere regel op te slaan in een lijst
+        int regelnummer;                                                                            //om het regelnummer van de regel te bepalen (= index)
+        int totaleRegelLengte;                                                                      //om het totaal aantal characters in het bestand te bepalen
+        try {  
+            in = new BufferedReader( new FileReader( "H8_Ise.txt" ) );                              //om het bestand in te lezen, in dit geval H8_Ise.txt
+            regellengte = 0;                                                                        //het geven van een waarde aan de opgestelde variabelen. waarde is overal 0 (want begin van regel of bestand) 
+            gemiddeldeLengte = 0;
+            langsteRegel = 0;
+            eersteLangsteRegel = 0;
+            aantalLangsteRegel = 0;
+            lijst = new ArrayList<Integer>();                                                       //waarden worden opgeslagen in een lijst van Integer
+            regelnummer = 0;
+            totaleRegelLengte = 0;
+            while ( ( regel = in.readLine() ) != null ) {                                           //zolang de regel die wordt gelezen niet gelijk is aan geen waarde(lees het einde van het bestand), gebeurt er het volgende:
+                regellengte = regel.length();                                                       //de lengte van de string regel bepaald met .length
+                lijst.add( regelnummer, regellengte);                                               //het regelnummer en de lengte worden aan elkaar gekoppeld toegevoegd aan de lijst
+                if (regellengte > langsteRegel){                                                    //wanneer de regellengte groter is dan de langste regel:
+                    langsteRegel = regellengte;                                                     //dan wordt langsteRegel met deze regellente opgeslagen (een eventuele eerdere langsteRegel wordt hiermee overschreven)
+                    eersteLangsteRegel = regelnummer + 1;                                           //bepaling van de plek van de eersteLangteRegel
+                }
+                totaleRegelLengte += regellengte;                                                   //het opslaan van alle regellengtes bij elkaar opgeteld
+                gemiddeldeLengte = (double) totaleRegelLengte / lijst.size();                       //het bepalen van het gemiddelde van alle regellengtes. dit is een dubbel terwijl er wordt gewerkt met integers - met (double) wordt totaleRegellengte geconverteerd naar double
+                if (regellengte == langsteRegel)                                                    //wanneer de regellengte van een volgende regel gelijk is aan de eerste langste regel
+                    aantalLangsteRegel++;                                                           //het opslaan en optellen van het aantal regels met dezelfde waarde als de eerste langste regel
+                regelnummer++;                                                                      //na het lezen van een regel gaat het programma verder met het lezen van de volgende regel voor zolang de voorwaarde van while geldig is
+            } 
+            System.out.printf("De gemiddelde regellengte is: %.2f%n", gemiddeldeLengte);                //om de bepaalde gegevens weer te geven in een print
+            System.out.println("De lengte van de langste regel is: " + langsteRegel);
+            System.out.println("De eerste regel met die langste regel is: " + eersteLangsteRegel);
+            System.out.println("Het aantal keer dat de langste regel voorkomt is: " + aantalLangsteRegel);
+        }
+        catch( FileNotFoundException e ) {                                                          //om een bestand dat niet wordt gevonden af te vangen
+            System.out.println( "Kan bestand niet vinden" );
+        }
+        catch( IOException e ) {                                                                    //om een bestand dat niet kan worden gelezen af te vangen
+            System.out.println( "Fout bij het lezen of sluiten bestand" );
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,247 @@
+H8
+opdracht 1
+
+
+
+/**
+ * Class RekenmachineApplet - write a description of the class here
+ * 
+ * @author Ise An Verstegen 
+ * @version 6/1/2021
+ * 
+ */
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class RekenmachineApplet extends JApplet
+{
+    // instance variables
+    private JPanel paneel;
+    
+    /**
+     * Called by the browser or applet viewer to inform this JApplet that it
+     * has been loaded into the system. It is always called before the first 
+     * time that the start method is called.
+     * 
+     * @param paneel is to call the panel of RekenmachineApplet
+     * setContentPane is to set a container - JPanel extends Conatiner so that it can be added as a contentPane
+     * 
+     */
+    public void init()
+    {
+        // provide any initialisation necessary for your JApplet
+       paneel = new RekenmachinePaneel();
+       setContentPane( paneel);
+    }
+}
+
+
+class RekenmachinePaneel extends JPanel  
+ {
+    //@param uitvoervak is the display that shows the result of the calculator calling JTextfield
+    //@param knop.. is the button to insert the method(number/+=*) into the machine
+    //@param resultaat the outcome of the methods
+    //@param getal1 & getal2 to collect and save the number
+    //@param laatsteActie to store the last action from ActonListeners
+    
+    private JTextField uitvoervak;
+    private JButton knop7, knop8, knop9, knopPlus,
+                    knop4, knop5, knop6, knopMin,
+                    knop1, knop2, knop3, knopMaal,
+                    knop0, knopDeel, knopReset, knopIs;
+    private double getal1, getal2,resultaat;
+    private String laatsteActie = null;
+                    
+    /**
+     *@param r is to add a new panel for the buttons with layout Grid(4,4)
+     *knop.. to call a button and name it
+     *to add a method to the button with  knop...addActionListener(new Knop..Handler())
+     *to add the buttons to the panel r r.add( knop.. );
+     *
+     *@param uitvoervak is to add a new TextField to display the results of the methods (buttons)
+     *          settings are "0" displayed and not editable
+     *          
+     *to add and define Placement and size of both objects (r and uitvoervak within the panel) add()
+     *
+     */
+    public RekenmachinePaneel(){
+        setLayout(new BorderLayout() );                                                                 //de algemene layout is de border layout
+        JPanel r = new JPanel();                                                                        //het aanmaken van een nieuw paneel genaamd r binnen het paneel
+        r.setLayout(new GridLayout(4,4 ) );                                                             //de layout van r is gridlayout 
+      
+        knop7 = new JButton( "7" );                                                                     //het aanmaken van en een weergave maken op de knop
+        knop7.addActionListener(new KnopHandler());                                                     //de knop verbinden aan een classe voor het uitvoeren van een actie wanneer de knop wordt gebruikt
+          
+        knop8 = new JButton( "8" );
+        knop8.addActionListener(new KnopHandler());
+        
+        knop9 = new JButton( "9" );
+        knop9.addActionListener(new KnopHandler());
+        
+        knopPlus = new JButton( "+" );
+        knopPlus.addActionListener( new ActieHandler());
+        
+        knop4 = new JButton( "4" );
+        knop4.addActionListener(new KnopHandler());
+        
+        knop5 = new JButton( "5" );
+        knop5.addActionListener(new KnopHandler());
+        
+        knop6 = new JButton( "6" );
+        knop6.addActionListener(new KnopHandler());
+        
+        knopMin = new JButton( "-" );
+        knopMin.addActionListener(new ActieHandler());
+        
+        knop1 = new JButton( "1" );
+        knop1.addActionListener(new KnopHandler());
+        
+        knop2 = new JButton( "2" );
+        knop2.addActionListener(new KnopHandler());
+        
+        knop3 = new JButton( "3" );
+        knop3.addActionListener(new KnopHandler());
+        
+        knopMaal = new JButton( "*" );
+        knopMaal.addActionListener(new ActieHandler());
+        
+        knop0 = new JButton( "0" );
+        knop0.addActionListener(new KnopHandler());
+        
+        knopDeel = new JButton( "/" );
+        knopDeel.addActionListener(new ActieHandler());
+        
+        knopReset = new JButton( "C" );
+        knopReset.addActionListener(new KnopHandler());
+        
+        knopIs = new JButton( "=" );
+        knopIs.addActionListener(new IsknopHandler());
+    
+        r.add( knop7 );                                                                                //de knop toevoegen aan paneel r
+        r.add( knop8 );
+        r.add( knop9 );
+        r.add( knopPlus );
+        r.add( knop4 );
+        r.add( knop5 );
+        r.add( knop6 );
+        r.add( knopMin );
+        r.add( knop1 );
+        r.add( knop2 );
+        r.add( knop3 );
+        r.add( knopMaal );
+        r.add( knop0 );
+        r.add( knopDeel ); 
+        r.add( knopReset ); 
+        r.add( knopIs ); 
+        
+        uitvoervak = new JTextField("0", 10 );                                                          //het aanmaken van een nieuw tekstvak genaamd uitvoervak binnen het paneel
+        uitvoervak.setText( "0" );                                                                      //standaar start is het getal 0
+        uitvoervak.setEditable(false);                                                                  //de tekst kan niet met het toetsenbord worden bewerkt, wel geselecteerd en gekopieerd
+         
+        add( uitvoervak, BorderLayout.NORTH );                                                          //het uitvoervak toevoegen aan het hoofdpaneel, bovenin uitgelijnd
+        add( r, BorderLayout.CENTER );                                                                  //het r-paneel toevoegen aan het hoofdpaneel, gecentreerd uitgelijnd
+        setVisible(true);                                                                               //het zichtbaar maken van het paneel
+        setSize(200,200);                                                                               //de afmetingen van het paneel
+    }
+    
+    private void toevoegen(String getal) {                                                              //methode om ingevoerde getallen en acties te reguleren            
+        if ((uitvoervak.getText()).equals("0"))                                                         //wanneer uitvoervak gelijk is aan 0
+             uitvoervak.setText(getal);                                                                 //string in uitvoervak wordt gelijk aan getal ingevoerd met knopHandler
+        else if (laatsteActie == "=") {                                                                 // wanneer laatste actie gelijk is aan = (IsKnopHandler)
+            uitvoervak.setText(getal);                                                                  //string in uitvoervak wordt gelijk aan getal berekend met IsKnopHandler
+            laatsteActie = null;                                                                        //laatsteActie wordt gelijk aan leeg/geen waarde waardoor er een nieuwe laatste actie kan worden gekozen
+        }
+        else
+             uitvoervak.setText(uitvoervak.getText() + getal);                                          //methodes KnopHandler:  aangeklikte knop toe te voegen aan de string en te bewaren in getal OF methode ActieHandler in gebruik
+    }
+        
+    /**
+     *Methods to change the displayed value of uitvoervak
+     *
+     */
+    class KnopHandler implements ActionListener {                                                       //met ActionListener voor het afhandelen van de komende handeling
+        public void actionPerformed( ActionEvent e ) {                                                  //het event e is wanneer de knop wordt ingedruk
+            if (e.getSource() == knop1)                                                                 //identificatie van de knop 
+                toevoegen( "1" );                                                                       //het weergeven van het aangeklikte getal in uitvoervak
+            else if (e.getSource() == knop2)
+                toevoegen( "2" );
+            else if (e.getSource() == knop3)
+                toevoegen( "3" );
+            else if (e.getSource() == knop4)
+                toevoegen( "4" );
+            else if (e.getSource() == knop5)
+                toevoegen( "5" );
+            else if (e.getSource() == knop6)
+                toevoegen( "6" );
+            else if (e.getSource() == knop7)
+                toevoegen( "7" );
+            else if (e.getSource() == knop8)
+                toevoegen( "8" );
+            else if (e.getSource() == knop9)
+                toevoegen( "9" );
+            else if (e.getSource() == knop0)
+                toevoegen( "0" );
+            else if (e.getSource() == knopReset)
+                toevoegen( "0" );
+        }
+    }
+    
+    /**
+     *Calculation-methods to use the displayed value of uitvoervak for calculation
+     *
+     */
+    class ActieHandler implements ActionListener {                                                      //met ActionListener voor het afhandelen van de komende handeling
+        public void actionPerformed( ActionEvent e ) {                                                  //het event e is wanneer de knop wordt ingedruk
+            if (e.getSource() == knopPlus){
+                String invoerstring1 = uitvoervak.getText();                                            //tekst van uitvoervak opslaan in string invoerstring 1
+                getal1 = Double.parseDouble(invoerstring1);                                             //invoerstring1 converteren naar een double en opslaan in getal1
+                laatsteActie = "+";                                                                     //opslaan van de actie in laatste actie zodat hiermee kan worden verder gewerkt in IsKnopHandler
+                uitvoervak.setText("0");                                                                //uitvoervak weer op nul stellen ter voorkomen van doorgaan van methode Toevoegen()
+            }
+            else if (e.getSource() == knopMin){
+                String invoerstring1 = uitvoervak.getText();
+                getal1 = Double.parseDouble(invoerstring1);
+                laatsteActie = "-";
+                uitvoervak.setText("0");
+            }
+            else if (e.getSource() == knopMaal){
+                String invoerstring1 = uitvoervak.getText();
+                getal1 = Double.parseDouble(invoerstring1);
+                laatsteActie = "*";
+                uitvoervak.setText("0");
+            }
+            else if (e.getSource() == knopDeel){
+                String invoerstring1 = uitvoervak.getText();
+                getal1 = Double.parseDouble(invoerstring1);
+                laatsteActie = "/";
+                uitvoervak.setText("0");
+            }
+        }
+    }
+    
+    /**
+     *Method to display the calculation in uitvoervak after Calculation-methods
+     *
+     */
+    class IsknopHandler implements ActionListener {                                                         //met ActionListener voor het afhandelen van de komende handeling
+        public void actionPerformed( ActionEvent e ) {                                                      //het event e is wanneer de knop wordt ingedruk
+            if (e.getSource() == knopIs){                                                                   //identificatie van de knop
+                String invoerstring2 = uitvoervak.getText();                                                //tekst van uitvoervak opslaan in string invoerstring 1
+                getal2 = Double.parseDouble(invoerstring2);                                                 //invoerstring2 converteren naar een double en opslaan in getal2
+                if (laatsteActie.equals("+"))                                                               //rekenmethoden afhankelijk van aangeklikte knop
+                    resultaat = getal1 + getal2;
+                else if (laatsteActie.equals("-"))
+                    resultaat = getal1 - getal2;
+                else if (laatsteActie.equals("*"))
+                    resultaat = getal1 * getal2;
+                else if (laatsteActie.equals("/"))
+                    resultaat = getal1 / getal2;
+                uitvoervak.setText( "" + resultaat );                                                       //het weergeven van resultaat als String in uitvoervak
+                laatsteActie = "=";                                                                         //opslaan van de actie in laatste actie
+            }
+        }
+    }
+}
+

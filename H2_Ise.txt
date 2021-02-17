@@ -1,0 +1,74 @@
+1
+
+/**
+ * Programmeur Asks for information (input) and, if called, this information can be printed.
+ * 
+ * Ise An Verstegen 
+ * @version17/12/2020
+ */
+
+public class Programmeur
+{
+    // instance variables - definieren van de attributes
+    private String naamProgrammeur;
+    private String specialisatieProgrammeur;
+    
+    /**
+     * Constructor for objects of class Programmeur
+     */
+    // Constructor = definieren van de variabele - in dit geval zodat de gebruiker de waarde toe kan kennen. 
+    // Dit is dus een formeel argument
+    public Programmeur(String naam, String specialisatie)
+    {
+        naamProgrammeur = naam;
+        specialisatieProgrammeur = specialisatie;
+    }
+
+    //Methode = de functie(s)
+    public void print()
+    {
+        System.out.println("Naam: " + naamProgrammeur);
+        System.out.println("Specialisatie: " + specialisatieProgrammeur);
+        System.out.println("---------");
+    }
+   
+}
+
+
+2
+
+/**
+ * Team determines variables called from class Programmeur and, if called, this information can be printed.
+ * 
+ * Ise An Verstegen 
+ * @version17/12/2020
+ */
+
+public class Team
+{
+    // instance variables - definieren van attributes gekoppeld aan Programmeur
+    private Programmeur programmeur1, programmeur2, programmeur3, programmeur4;
+
+    //Constructor for objects of class Team
+    public Team()
+    {
+        // initialise instance variables - Het toekennen van waarden aan de nieuw gedefinieerde variables/attributes
+        programmeur1 = new Programmeur("Bodei", "Java");
+        programmeur2 = new Programmeur("Jeroen", "Java"); 
+        programmeur3 = new Programmeur("Marije", "Java"); 
+        programmeur4 = new Programmeur("Ise", "Java");
+    }
+
+    //Method - De teamleden worden gezamenlijk geprint 
+    public void printAlleTeamleden()
+    {
+        // put your code here
+        System.out.println("Alle Teamleden:");
+        System.out.println("---------");
+        programmeur1.print();
+        programmeur2.print();
+        programmeur3.print();
+        programmeur4.print();
+    }
+}
+

@@ -1,0 +1,296 @@
+H6 UPDATED VERSION 
+1/7/2021 
+oefening 3 - Cijferlijst2
+
+Oefening 2
+
+/**
+ * 
+ * To calculate the amount, average and amount sufficient/insufficient of marks.
+ * 
+ * @author Ise An Verstegen
+ * @version 30/12/2020
+ */
+
+import java.util.*;
+
+public class Kinderdagverblijf {
+  private ArrayList<Kind> lijst;
+  
+  public Kinderdagverblijf() {
+    lijst = new ArrayList<Kind>();
+    
+    lijst.add( new Kind( "Ana",
+          new Datum( 18, 7, 1998 ), new Datum( 29, 4, 2004 ) ) );
+    lijst.add( new Kind( "Arjen",
+          new Datum( 1, 10, 1994 ), new Datum( 1, 1, 2004 ) ) );
+    lijst.add( new Kind( "Josien",
+          new Datum( 6, 4, 1998 ),  new Datum( 3, 3, 2004 ) ) );
+    lijst.add( new Kind( "Paul",
+          new Datum( 28, 4, 1999 ), new Datum( 14, 2, 2004 ) ) );
+    lijst.add( new Kind( "Rutger",
+          new Datum( 28, 1, 1996 ), new Datum( 2, 2, 2004 ) ) );  }
+
+  public void printOverzicht() {
+    System.out.println( "Overzicht van de kinderen" );      
+    for( Kind k : lijst ) 
+      System.out.println( k );
+    System.out.println();
+  }
+       
+  public void schrijfIn( Kind k ) {
+    lijst.add( k );
+  }   
+
+  public void verwijder( Kind k ) {
+    lijst.remove( k );
+  }
+
+  public Kind zoek( String naam ) {
+    Kind gezochtKind = null;
+    for( Kind k : lijst ) {
+      if( naam.equals( k.getNaam() ) )
+        gezochtKind = k;
+    }
+    return gezochtKind;
+  }
+  
+  /**
+     * Method for objects of class Cijferlijst
+     * to search for th child by the year of birth void zoekOpGeboorteJaar( int jaar ) from list Kind 
+     * Condition: If jaar equals from Kind(the date of birth constructed in Kind(getGeboortedatum) which format is constructed in Datum(getJaar))
+     * then print found kind for as long as the list is not finshed (for Kind k : lijst)
+     * 
+     * @param jaar is year of the date of birth
+     *
+     */public void zoekOpGeboorteJaar( int jaar ) {
+    for( Kind k : lijst ) {
+      if( jaar == k.getGeboortedatum().getJaar() ) 
+        System.out.println(k);
+    }
+  }
+}
+
+oefening 3
+
+
+/**
+ * To calculate the amount, average and amount sufficient/insufficient of grades.
+ * 
+ * @author Ise An Verstegen
+ * @version 31/12/2020
+ */
+
+import java.util.*;
+
+public class Cijferlijst2
+{
+    //initiating vairables: working with grades = doubles;
+    private double tentamencijfer;
+    private ArrayList<Double> lijst;
+
+    /**
+     * Constructor for objects of class Cijferlijst
+     * 
+     * @param lijst = ArrayList that will collect all valid given grades in a list
+     * 
+     */
+    public Cijferlijst2()
+    {
+        lijst = new ArrayList<Double>();
+    }
+    
+    /**
+     * Methods for objects of class Cijferlijst
+     * to display the given grade to user String invoer(double tentamencijfer)
+     *          to determin if the given grade is valid (tentamencijfer > 0 && tentamencijfer <= 10), if so, add to list lijst
+     * to calculate the number of grade given aantalCijfers() from list lijst
+     * to calculate the number of unsufficient grade given aantalOnvoldoendes() from list onvoldoendelijst
+     * to calculate the number of sufficient grade given aantalVoldoendes() from list voldoendelijst
+     * to calculate the average grade double gemiddelde() using list lijst
+     * to print an overview void uitvoerscherm()
+     * 
+     * 
+     * @param tentamencijfer is given grade
+     * @param aantalCijfers is number of grade
+     * @param aantalOnvoldoendes is number of unsufficient grade
+     * @param aantalVoldoendes is number of sufficient grade
+     * @param totaal is total amount of grade given
+     * @param gemiddelde is average of all grade given
+     *
+     */
+    
+    public String invoer(double tentamencijfer)
+    {
+        if (tentamencijfer > 0 && tentamencijfer <= 10)
+        {
+            lijst.add(tentamencijfer);        
+        }
+        return ("De invoer is: " + tentamencijfer);
+    }
+    
+    public int aantalCijfers()
+    {
+        int aantalCijfers = 0;
+        aantalCijfers = lijst.size(); 
+        return aantalCijfers;
+    }
+        
+    public int aantalOnvoldoendes()
+    {
+        int aantalOnvoldoendes = 0;
+        for (Double c : lijst)
+            if (c > 0 && c < 5.5)
+            {
+                aantalOnvoldoendes++;
+            }
+        return aantalOnvoldoendes;
+    }
+    
+    public int aantalVoldoendes()
+    {
+        int aantalVoldoendes = 0;
+        for (Double c : lijst)
+            if (c >= 5.5 && c <= 10)
+            {
+                aantalVoldoendes++;
+            }
+        return aantalVoldoendes;
+    }
+        
+        
+    public double gemiddelde()
+    {
+        double totaal = 0;
+        double gemiddelde;
+        for (Double c : lijst)
+            {totaal += c;
+            }
+        gemiddelde = totaal / aantalCijfers();
+        return gemiddelde;
+    }
+    
+    public void uitvoerscherm()
+    {
+        System.out.println("Aantal ingevoerde cijfers: " + aantalCijfers() + 
+                            "\nGemiddelde cijfer: " + gemiddelde() +
+                            "\nAantal onvoldoende cijfers: " + aantalOnvoldoendes() 
+                            + "\nAantal voldoende cijfers: " + aantalVoldoendes());
+    }
+}
+
+
+
+/**
+ * To calculate the amount, average and amount sufficient/insufficient of marks.
+ * 
+ * @author Ise An Verstegen
+ * @version 31/12/2020
+ */
+
+import java.util.*;
+
+public class Cijferlijst
+{
+    //initiating vairables: working with marks = doubles;
+    private double tentamencijfer;
+    private ArrayList<Double> lijst;
+    private ArrayList<Double> onvoldoendelijst;
+    private ArrayList<Double> voldoendelijst;
+
+    /**
+     * Constructor for objects of class Cijferlijst
+     * 
+     * @param lijst = ArrayList that will collect all valid given marks in a list
+     * @param ovoldoendelijst = ArrayList that will collect all marks >0 && < 5.5 in a list
+     * @param ovoldoendelijst = ArrayList that will collect all marks >=5.5 && <= 10 in a list
+     * 
+     */
+    public Cijferlijst()
+    {
+        lijst = new ArrayList<Double>();
+        onvoldoendelijst = new ArrayList<Double>();
+        voldoendelijst = new ArrayList<Double>();
+    }
+    
+    /**
+     * Methods for objects of class Cijferlijst
+     * to display the given mark to user String invoer(double tentamencijfer)
+     *          to determin if the given mark is valid (tentamencijfer > 0 && tentamencijfer <= 10), if so, add to list lijst
+     *          to determin if the given mark insufficient (tentamencijfer > 0 && tentamencijfer < 5.5) add to list onvlodoendelijst
+     *          to determin if the given mark insufficient (tentamencijfer >= 5.5 && tentamencijfer <= 10) add to list voldoendelijst
+     * to calculate the number of marks given aantalCijfers() from list lijst
+     * to calculate the number of unsufficient marks given aantalOnvoldoendes() from list onvoldoendelijst
+     * to calculate the number of sufficient marks given aantalVoldoendes() from list voldoendelijst
+     * to calculate the average mark double gemiddelde() using list lijst
+     * to print an overview void uitvoerscherm()
+     * 
+     * 
+     * @param tentamencijfer is given mark
+     * @param aantalCijfers is number of marks
+     * @param aantalOnvoldoendes is number of unsufficient marks
+     * @param aantalVoldoendes is number of sufficient marks
+     * @param totaal is total amount of marks given
+     * @param gemiddelde is average of all marks given
+     *
+     */
+    
+    public String invoer(double tentamencijfer)
+    {
+        if (tentamencijfer > 0 && tentamencijfer <= 10)
+        {
+            lijst.add(tentamencijfer);
+            //System.out.print("De invoer is: " + tentamencijfer + "\n");            
+        }
+        if (tentamencijfer > 0 && tentamencijfer < 5.5)
+        {
+            onvoldoendelijst.add(tentamencijfer);            
+        }
+        if (tentamencijfer >= 5.5 && tentamencijfer <= 10)
+        {
+            voldoendelijst.add(tentamencijfer);            
+        }
+        return ("De invoer is: " + tentamencijfer);
+    }
+    
+    public int aantalCijfers()
+    {
+        int aantalCijfers = 0;
+        aantalCijfers = lijst.size(); 
+        return aantalCijfers;
+        }
+        
+    public int aantalOnvoldoendes()
+    {
+        int aantalOnvoldoendes = 0;
+        aantalOnvoldoendes = onvoldoendelijst.size(); 
+        return aantalOnvoldoendes;
+        }
+    
+        public int aantalVoldoendes()
+    {
+        int aantalVoldoendes = 0;
+        aantalVoldoendes = voldoendelijst.size(); 
+        return aantalVoldoendes;
+        }
+        
+    public double gemiddelde()
+    {
+        double totaal = 0;
+        double gemiddelde;
+        for (Double c : lijst)
+            {totaal += c;
+            }
+        gemiddelde = totaal / aantalCijfers();
+        return gemiddelde;
+    }
+    
+    public void uitvoerscherm()
+    {
+        System.out.println("Aantal ingevoerde cijfers: " + aantalCijfers() + 
+                            "\nGemiddelde cijfer: " + gemiddelde() +
+                            "\nAantal onvoldoende cijfers: " + aantalOnvoldoendes() 
+                            + "\nAantal voldoende cijfers: " + aantalVoldoendes());
+    }
+}
+

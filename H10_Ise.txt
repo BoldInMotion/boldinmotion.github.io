@@ -1,0 +1,95 @@
+H10
+
+Opdracht1
+
+
+/**
+ * Write a description of class Invoerpaneel here.
+ * 
+ * @author Ise An Verstegen 
+ * @version 7/1/2021
+ */
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class Invoerpaneel extends JPanel {
+  private JTextField invoervakA, uitvoervak;
+  
+  public Invoerpaneel() {
+    setLayout( new GridLayout( 3, 2 ) );
+    invoervakA = new JTextField( 10 );
+    uitvoervak = new JTextField( 20 );
+    uitvoervak.setEditable( false );
+    uitvoervak.setBackground( Color.WHITE );
+
+    add( new JLabel( "Getal a" ) ); 
+    add( invoervakA );
+
+    JButton deelknop  = new JButton( "wortel" );
+    deelknop.addActionListener( new KnopHandler() );
+    add( new JLabel() );  // leeg label
+    add( deelknop );
+    
+    add( new JLabel( "De wortel van getal a: " ) );
+    add( uitvoervak );
+  }
+  
+  private class KnopHandler implements ActionListener {
+    /**
+     *first try to perform the method actionperformed to display result in uitvoervak
+     *then catch if there is no valid number given (for characters) with ( NumberFormatException nfe )
+     *then catch if there is no valid number given with (for numbers) with ( NumberFormatException nfe )
+     */
+    
+    public void actionPerformed( ActionEvent e ) {
+      try{
+          double a = Double.parseDouble( invoervakA.getText() );
+          double resultaat = wortel( a );
+          uitvoervak.setText( String.format( "%.4f", resultaat ) ); 
+      }
+      catch( NumberFormatException nfe ) {
+        JOptionPane.showMessageDialog( Invoerpaneel.this,
+          "Fout getal ingevoerd",
+          "Fout",
+          JOptionPane.ERROR_MESSAGE
+        );
+      }
+      catch( ArithmeticException ae ) {
+        JOptionPane.showMessageDialog( Invoerpaneel.this,
+          ae.getMessage(),
+          "Fout",
+          JOptionPane.ERROR_MESSAGE
+        );
+       }
+    }
+    
+    /**
+     *throw an exception connected to ( ArithmeticException ae ) for x<0
+     *then perform the method wortel() to calculate the square root of x
+     */
+    double wortel(double x)throws ArithmeticException {
+      if( x < 0.0 )
+        throw new ArithmeticException( "Vierkantswortel niet gedefinieerd" );
+      return Math.sqrt(x);
+    }
+  }
+}
+
+/**
+ * To load the applet when the method will be runned for the first time.
+ * 
+ * @author Ise An Verstegen 
+ * @version 7/1/2021
+ */
+
+import java.awt.*;
+import javax.swing.*;
+
+public class WortelApplet extends JApplet
+{
+  public void init() {
+    setContentPane( new Invoerpaneel() );
+  }
+}
+	
